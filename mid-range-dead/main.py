@@ -32,7 +32,7 @@ if __name__ == '__main__':
     ax = fig.add_axes([0, 0, 1, 1], facecolor="black")
     create_court(ax, 'white')
 
-    YEAR = 2000
+    YEAR = 2024
 
     if f"{YEAR}.csv" not in os.listdir("./mid-range-dead/years"):
         fetch_year(YEAR)
