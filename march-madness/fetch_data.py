@@ -15,6 +15,10 @@ seed_win_rates = {
     for x in range(1, 17)
 }
 
+seed_teams = {
+    x+1: {} for x in range(16)
+}
+
 def extract_team_data(tag):
     if len(tag.find_all("a")) < 2:
         print(tag.find("a").text)
@@ -28,7 +32,13 @@ def extract_team_data(tag):
         "score": int(score.text)
     }
 
-def parse_bracket(bracket):
+def add_team(team, year):
+    if team["name"] in seed_teams[team["seed"]]:
+        seed_teams[team["seed"]][team['name']].add(int(year))
+    else:
+        seed_teams[team["seed"]][team['name']] = {int(year)}
+
+def parse_bracket(bracket, year):
     games = 0
 
     for game in bracket.find_all("div", class_=lambda x: x is None):
@@ -42,6 +52,9 @@ def parse_bracket(bracket):
         if team1["seed"] > team2["seed"]: # higher seed? switch
             team1, team2  = team2, team1
 
+        add_team(team1, year)
+        add_team(team2, year)
+
         upset = team2["score"] > team1["score"]
 
         key = (team1["seed"], team2["seed"])
@@ -50,7 +63,6 @@ def parse_bracket(bracket):
         else:
             seed_matchups[key][int(upset)] += 1 # False = 0, True = 1
 
-        # print(f"({team1['seed']}) {team1['name']} {team1['score']} - {team2['score']} {team2['name']} ({team2['seed']}) ")
         seed_win_rates[team1["seed"]][upset] += 1
         seed_win_rates[team2["seed"]][1-upset] += 1
 
@@ -64,7 +76,7 @@ def parse_tournament(year):
 
     total_games = 0
     for bracket in soup.find_all("div", {"id": "bracket"}):
-        total_games += parse_bracket(bracket)
+        total_games += parse_bracket(bracket, year)
 
     return total_games
 
@@ -76,3 +88,4 @@ if __name__ == '__main__':
 
     print(seed_matchups)
     print(seed_win_rates)
+    print(seed_teams)
