@@ -1,3 +1,5 @@
 # Ignore all statcast data files
 baseball_simulation/parsing/statcast_data*.csv
 baseball_simulation/parsing/statcast_data*.pkl
+
+.idea/
