@@ -1,0 +1,1 @@
+The statcast pickle objects aren't on git if you want to play around with /parsing, so make sure to just run pull_data
