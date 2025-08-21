@@ -3,3 +3,4 @@ baseball_simulation/parsing/statcast_data*.csv
 baseball_simulation/parsing/statcast_data*.pkl
 
 .idea/
+.DS_Store
