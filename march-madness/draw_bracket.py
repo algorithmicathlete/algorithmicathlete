@@ -30,8 +30,8 @@ class BracketDrawer:
     def __init__(self, regions, winner_left, winner_right, champion):
         self.im = Image.open("bracket.png")
 
-        self.font_path = "/System/Library/Fonts/Supplemental/Arial.ttf"
-        self.font_path_narrow = "/System/Library/Fonts/Supplemental/Arial Narrow.ttf"
+        self.font_path = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+        self.font_path_narrow = "/System/Library/Fonts/Supplemental/Arial Narrow Bold.ttf"
 
         try:
             self.font = ImageFont.truetype(self.font_path, 32)
