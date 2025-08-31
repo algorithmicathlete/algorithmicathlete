@@ -3,6 +3,7 @@ import nfl_data_py as nfl
 pbp = nfl.import_pbp_data([2024])
 pbp = pbp[pbp["season_type"] == "REG"]
 
+print(list(pbp.columns))
 teams = ['MIA', 'DET', 'ATL', 'KC', 'LV', 'WAS', 'NYJ', 'SEA', 'PIT', 'PHI', 'LA', 'DEN', 'HOU', 'ARI', 'BAL', 'DAL', 'JAX', 'BUF', 'IND', 'GB', 'CLE', 'NE', 'TEN', 'CAR', 'MIN', 'SF', 'LAC', 'NO', 'TB', 'CIN', 'CHI', 'NYG']
 
 gwd = {x: 0 for x in teams}
