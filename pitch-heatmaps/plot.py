@@ -6,17 +6,17 @@ from adjustText import adjust_text
 
 df = pd.read_csv("name.csv")
 name_to_id = dict(zip(df["MLBNAME"], df["MLBID"]))
-matplotlib.rc('axes', edgecolor='white')
+# matplotlib.rc('axes', edgecolor='white')
 
 def draw_chase_contact_plot(metrics):
-    fig, ax = plt.subplots(figsize=(7, 7))
+    fig, ax = plt.subplots(figsize=(7.5,7.5))
     fig.patch.set_facecolor("black")
     ax.set_facecolor("black")
 
     ax.scatter(metrics["chase%"], metrics["o_contact%"], s=18, alpha=0.8)
 
-    ax.set_xlabel("Chase Rate (O-Swing%)", color="white", alpha=0.7)
-    ax.set_ylabel("Outside Contact % (O-Contact%)", color="white", alpha=0.7)
+    ax.set_xlabel("Chase Rate (O-Swing%)", color="white")
+    ax.set_ylabel("Outside Contact % (O-Contact%)", color="white")
     ax.grid(True, linestyle="--", alpha=0.25)
 
     x_med = metrics["chase%"].median()
@@ -24,31 +24,22 @@ def draw_chase_contact_plot(metrics):
     ax.axvline(x_med, linestyle="--", linewidth=1, color="#1414aa")
     ax.axhline(y_med, linestyle="--", linewidth=1, color="#1414aa")
 
-    a = metrics.nlargest(5, "chase%")
-    b = metrics.nlargest(5, "o_contact%")
-    c = metrics.nsmallest(5, "chase%")
-    d = metrics.nsmallest(5, "o_contact%")
-
-    chase_thresh = metrics["chase%"].quantile(0.9)
-    contact_thresh = metrics["o_contact%"].quantile(0.9)
-
-    both_high = metrics[
-        (metrics["chase%"] >= chase_thresh) &
-        (metrics["o_contact%"] >= contact_thresh)
-    ]
-
-    e = metrics[metrics["name"] == "Javier Baez"]
+    a = metrics.nlargest(8, "chase%")
+    b = metrics.nlargest(8, "o_contact%")
+    c = metrics.nsmallest(8, "chase%")
+    d = metrics.nsmallest(8, "o_contact%")
 
     texts = []
 
-    for _, r in pd.concat([a, b, c, d, both_high, e]).drop_duplicates().reset_index(drop=True).iterrows():
-        texts.append(ax.annotate(r["name"], (r["chase%"], r["o_contact%"]), color="white", fontsize=8, alpha=0.7))
+    for _, r in pd.concat([a, b, c, d]).drop_duplicates().reset_index(drop=True).iterrows():
+        texts.append(ax.annotate(r["name"], (r["chase%"], r["o_contact%"]), color="white", fontsize=8))
 
-    adjust_text(texts)
+    adjust_text(texts, arrowprops=dict(arrowstyle='-', color='#a0a0a0'))
 
     ax.tick_params(colors="white")
 
     plt.tight_layout()
+    # fig.savefig("chasecontacthighestres.png", facecolor=fig.get_facecolor(), bbox_inches="tight", dpi=300)
     plt.show()
 
 def draw_strike_zone(df, name, SWUNG_DESC, CONTACT_DESC):
@@ -83,6 +74,8 @@ def draw_strike_zone(df, name, SWUNG_DESC, CONTACT_DESC):
     ax.set_aspect('equal', adjustable='box')
     plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.05)
     plt.tight_layout()
+
+    # plt.savefig("luisarraez.png", dpi=300)
     plt.show()
 
 def draw_ops_beeswarm(metrics):
@@ -93,8 +86,7 @@ def draw_ops_beeswarm(metrics):
 
     print(metrics["ops_outside"].median())
     for _, x in metrics.nlargest(6, "ops_outside").iterrows():
-        print(x["name"]
-              )
+        print(x["name"], x["ops_outside"])
     outliers = metrics.nlargest(1, "ops_outside")
 
     texts = []
@@ -105,6 +97,6 @@ def draw_ops_beeswarm(metrics):
     ax.spines["bottom"].set_color("white")
 
     ax.tick_params(colors="white")
-    ax.set_xlabel("OPS On Outside Pitches", color="white", alpha=0.7)
+    # ax.set_xlabel("OPS On Outside Pitches", color="white", alpha=0.7)
 
     plt.show()

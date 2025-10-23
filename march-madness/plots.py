@@ -19,7 +19,7 @@ def stacked_bar(appearances):
     ax.set_xlabel("Seed", color="white")
     ax.set_ylabel("Count (across simulations)", color="white")
     ax.set_xticks(seeds)
-    ax.legend(facecolor="black", edgecolor="none", labelcolor="white")
+    # ax.legend(facecolor="black", edgecolor="none", labelcolor="white")
 
     ax.tick_params(colors="white")
     for i, spine in enumerate(ax.spines.values()):

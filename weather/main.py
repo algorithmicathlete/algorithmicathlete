@@ -1,17 +1,18 @@
 import nfl_data_py as nfl
 
-pbp = nfl.import_pbp_data([2024])
-pbp = pbp[pbp["field_goal_attempt"]]
+pbp = nfl.import_pbp_data([x for x in range(2016, 2025)])
+pbp = pbp[(pbp["field_goal_attempt"] == 1) & (pbp["kick_distance"] > 50)]
+print(list(pbp.columns))
+print(pbp["kick_distance"].unique())
 
-# temp, wind, weahter
-for x in pbp.columns:
-    print(x)
+wind = {"heavy": [0, 0], "light": [0, 0]}
+for _, attempt in pbp.iterrows():
+    if attempt["wind"] >= 20:
+        wind["heavy"][attempt["field_goal_result"] != "made"] += 1
+    else:
+        wind["light"][attempt["field_goal_result"] != "made"] += 1
 
-print(pbp["weather"].unique())
-print(pbp["wind"].unique())
-
-print(pbp["temp"].unique())
-print(pbp["run_gap"].unique())
+print(wind)
 
 """
 CHAOS FACTOR

@@ -6,7 +6,6 @@ id_to_name = dict(zip(df["MLBID"], df["MLBNAME"]))
 
 def outside_zone_df(df_out, SWUNG_DESC, CONTACT_DESC):
     rows = []
-    print(df_out["events"].unique())
     for batter_id, batter_df in df_out.groupby("batter"):
         outside_pitches = batter_df.shape[0]
 
@@ -27,7 +26,10 @@ def outside_zone_df(df_out, SWUNG_DESC, CONTACT_DESC):
             print(batter_id)
             name = None
 
+
         end = batter_df[batter_df["events"].notna()]
+
+
         H = end["events"].isin(["single", "double", "triple", "home_run"]).sum()
         BB = end["events"].eq("walk").sum()
         HBP = end["events"].eq("hit_by_pitch").sum()
