@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     data = pd.read_csv(f"years/2024.csv")
     # hb = draw_league_shot_chart(YEAR)
-    draw_player_shot_chart("Jordan Poole")
+    draw_player_shot_chart("Victor Wembanyama")
 
     create_court(ax, 'white')
 

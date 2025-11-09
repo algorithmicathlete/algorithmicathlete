@@ -85,4 +85,5 @@ plt.xlabel("Time", fontsize=16, labelpad=10)
 plt.tight_layout()
 
 plt.xlim(left=0)
-plt.savefig("playoffodds.png", dpi=300)
+# plt.show()
+plt.savefig("playoffodds.png", dpi=350)
