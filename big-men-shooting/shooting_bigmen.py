@@ -36,9 +36,9 @@ for i, name in enumerate(names):
     player = seven_footers.loc[seven_footers["DISPLAY_FIRST_LAST"] == name].iloc[0]
 
     img = mpimg.imread(f"headshots/{player['PERSON_ID']}.png")
-    imagebox = OffsetImage(img, zoom=0.22)
+    imagebox = OffsetImage(img, zoom=0.25)
 
-    increase = player.PERSON_ID == 204001
+    increase = False
     ab = AnnotationBbox(imagebox, (x[i]+(1.5 if increase else 0), y[i]+0.01+(0.0025 if increase else 0)), frameon=False)
     ax.add_artist(ab)
 
@@ -52,10 +52,11 @@ plt.tick_params(axis='y', colors='white')
 for spine in ax.spines.values():
     spine.set_color("#888888")
 
-ax.set_ylabel("3-Point %")
-ax.set_xlabel("3-Point Attempts")
+ax.set_ylabel("3-Point %", fontsize=14)
+ax.set_xlabel("3-Point Attempts", fontsize=14)
 plt.tight_layout()
-ax.set_ylim(top=0.5)
+ax.set_ylim(bottom=0.095, top=0.45)
+ax.set_xlim(left=14)
 
 # plt.show()
 plt.savefig("big-men-3s.png", dpi=300)

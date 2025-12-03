@@ -58,7 +58,7 @@ def draw_shots_hex(ax, df, gridsize=25):
     return hb
 
 import pandas as pd
-df = pd.read_csv("7foot_2010.csv")
+df = pd.read_csv("7foot_2015.csv")
 
 draw_shots_hex(ax, df, gridsize=30)
 

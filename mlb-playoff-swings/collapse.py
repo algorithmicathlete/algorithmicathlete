@@ -44,7 +44,7 @@ def get_history(url, window, label, game_number, color):
 teams = [
     # ('NYM', 67, "#FF5910"),
     # ('MIL', 67, "#FFC52F"),
-    ("DET", 90, "#0C2340"),
+    ("DET", 90, "#FA4616"),
     ("CLE", 90, "#E50022")
 ]
 

@@ -41,6 +41,7 @@ fig, ax = plt.subplots(figsize=(10, 5))
 
 x = []
 y = []
+z = []
 
 
 for row in table.find_all("tr"):
@@ -53,11 +54,14 @@ for row in table.find_all("tr"):
     x.append(payroll)
     y.append(win)
 
+    if name.lower() == "sd":
+        name="sdp"
     path = f"logos/{name.lower() if name in team_colors else name}.png"
     logo = mpimg.imread(path)
     imagebox = OffsetImage(logo, zoom=0.3)
     ab = AnnotationBbox(imagebox, (payroll, win), frameon=False)
     plt.gca().add_artist(ab)
+
 
 
 fig.set_facecolor("#000000")
@@ -79,8 +83,9 @@ plt.plot(x, m*x + b, color='#0a0aaa', linewidth=1, linestyle='--', alpha=0.6)
 ax.set_xlim(50, 360)
 ax.set_ylim(38, 102)
 
-ax.set_xlabel("Payroll (in $m)")
-ax.set_ylabel("Wins")
+ax.set_xlabel("Payroll (in $m)", fontsize=12)
+ax.set_ylabel("Wins", fontsize=12)
 
 plt.tight_layout()
-plt.savefig("payrollvswins.png", dpi=300)
+# plt.show()
+plt.savefig("payrollvswins.png", dpi=350)
