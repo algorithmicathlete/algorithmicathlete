@@ -8,13 +8,13 @@ from shotchart import get_shot_data_player, get_shot_data_team, all_teams
 
 def draw_league_shot_chart(YEAR):
     data = pd.read_csv(f"years/{YEAR}.csv")
-    return draw_shots_hex(ax, data, gridsize=35, mincount=0)
+    return draw_shots_hex(ax, data, gridsize=35, mincount=50)
 
 def draw_player_shot_chart(player_full_name):
     draw_shots(ax, get_shot_data_player(player_full_name))
 
 def fetch_year(YEAR):
-    if not (2000 <= YEAR <= 2024):
+    if not (2000 <= YEAR <= 2025):
         raise ValueError("Has to be between 2000-2024")
 
     dfs = []
@@ -31,15 +31,15 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(7, 6.8))
     ax = fig.add_axes([0, 0, 1, 1], facecolor="black")
 
-    YEAR = 2000
+    YEAR = 2025
 
     if f"{YEAR}.csv" not in os.listdir("./years"):
         fetch_year(YEAR)
         # this takes 2-ish minutes
 
-    data = pd.read_csv(f"years/2024.csv")
-    # hb = draw_league_shot_chart(YEAR)
-    draw_player_shot_chart("Victor Wembanyama")
+    # data = pd.read_csv(f"years/2024.csv")
+    hb = draw_league_shot_chart(YEAR)
+    # draw_player_shot_chart("Victor Wembanyama")
 
     create_court(ax, 'white')
 

@@ -1,33 +1,51 @@
-from collections import defaultdict
 import nfl_data_py as nfl
+from plot import epa_scatter, beeswarm
 
-pbp = nfl.import_pbp_data([x for x in range(2016, 2026)])
+
+pbp = nfl.import_pbp_data([2025])
+gl = pbp[pbp["yardline_100"] <= 5].copy()
+gl["turnover"] = (gl["fumble_lost"] == 1) | (gl["interception"] == 1)
+fumbles = gl[(gl["fumble_lost"] == 1)]
+picks = gl[(gl["interception"] == 1)]
+
+print(gl[gl["turnover"] == 1]["epa"].mean())
+
+agg_base = dict(
+    turnover_pct=("turnover", "mean"),
+    total_int=("interception", "sum"),
+    total_fmb=("fumble_lost", "sum"),
+    total_to=("turnover", "sum"),
+    td_rate=("touchdown", "mean"),
+    gl_epa=("epa", "mean")
+)
+
+df_off = gl.groupby("posteam").agg(**agg_base).reset_index()
+
+df_def = (
+    gl.groupby("defteam")
+      .agg(**{f"def_{k}": v for k, v in agg_base.items()})
+      .reset_index()
+      .rename(columns={"defteam": "team"})
+)
+
+df_off = df_off.rename(columns={"posteam": "team"})
+
+df = df_off.merge(df_def, on="team", how="outer")
+df = df.sort_values("total_to")
+
+
+df_def = (
+    gl.groupby("defteam")
+      .agg(**{f"def_{k}": v for k, v in agg_base.items()})
+      .reset_index()
+      .rename(columns={"defteam": "team"})
+)
+
+print(df[["team", "turnover_pct", "def_turnover_pct", "total_to", "def_total_to"]])
+print("\n"*5)
 
 print([ x for x in list(pbp.columns)])
 
-# graph of postseason win probs
-
-fumbles = pbp[(pbp["fumble_lost"] == 1) & (pbp["yardline_100"] <= 5)]
-picks = pbp[(pbp["interception"] == 1) & (pbp["yardline_100"] <= 5)]
-pick_sixes = 0
-
-fumblers =  defaultdict(int)
-ball_hawks = defaultdict(int)
-qbs =  defaultdict(int)
-
-for i, row in fumbles.iterrows():
-    fumblers[row["fumbled_1_player_name"]] += 1
-    print(row["game_id"], row["fumbled_1_player_name"], row["yardline_100"], row["wpa"], row["epa"])
-
-for i, row in picks.iterrows():
-    pick_sixes += row["return_touchdown"]
-    ball_hawks[row["interception_player_name"]] += 1
-    qbs[row["passer_player_name"]] += 1
-    print(row["game_id"], row["interception_player_name"], row["passer_player_name"], row["yardline_100"], row["wpa"])
-
-print(list(sorted(fumblers.items(), key=lambda x: x[1], reverse=True)))
-print(list(sorted(ball_hawks.items(), key=lambda x: x[1], reverse=True)))
-print(list(sorted(qbs.items(), key=lambda x: x[1], reverse=True)))
-
-print(fumbles.shape[0], picks.shape[0])
-print(pick_sixes)
+beeswarm(df, "def_total_to")
+beeswarm(df, 'total_to')
+epa_scatter(df)

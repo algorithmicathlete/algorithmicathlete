@@ -19,8 +19,8 @@ for row in soup.find("tbody").find_all("tr"):
         count += 1
         rows.append({
             "name": stats[1],
-            "td": float(stats[headers.index("TD%")]),
-            "int": float(stats[headers.index("Int%")])
+            "td": float(stats[headers.index("TD")]),
+            "int": float(stats[headers.index("Int")])
         })
 
 fig, ax = plt.subplots(figsize=(12, 6))
@@ -33,4 +33,4 @@ for _, row in df.iterrows():
         ax.text(row["int"], row["td"], row["name"])
     )
 adjustText.adjust_text(texts)
-plt.show()
+plt.tight_layout(); plt.show()

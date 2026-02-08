@@ -7,7 +7,7 @@ from matplotlib import image as mpimg
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 pbp = nfl.import_pbp_data([2025])
-third_downs = pbp[pbp["down"] == 3]
+third_downs = pbp[pbp["down"] == 4]
 third_downs.dropna(subset=["epa", "defteam"])
 print(list(pbp.columns))
 def_epa = third_downs.groupby("defteam")["epa"].mean().rename("def_epa")
@@ -47,10 +47,10 @@ for _, team in df.iterrows():
 
 ax.scatter(df['off_epa'], -df['def_epa'], color='dodgerblue', s=80, alpha=0)
 
-plt.title("NFL Teams' EPA on 3rd Down", fontsize=14, fontweight="bold", color="#CCCCCC")
+plt.title("NFL Teams' EPA on 4th Down", fontsize=14, fontweight="bold", color="#CCCCCC")
 ax.set_xlabel("Average Offensive EPA", fontsize=12)
 ax.set_ylabel("Average Defensive EPA (Inverted)", fontsize=12)
 
 plt.tight_layout()
 # plt.show()
-plt.savefig("3rddown.png", dpi=300)
+plt.savefig("4thdown.png", dpi=300)
