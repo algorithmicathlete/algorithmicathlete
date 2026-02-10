@@ -28,7 +28,8 @@ def fetch_year(YEAR):
     master_df.to_csv(f"./years/{YEAR}.csv")
 
 if __name__ == '__main__':
-    fig = plt.figure(figsize=(7, 6.8))
+    factor = 1.5
+    fig = plt.figure(figsize=(4*factor, 3.76*factor))
     ax = fig.add_axes([0, 0, 1, 1], facecolor="black")
 
     YEAR = 2025
